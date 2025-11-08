@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Kibana Lite</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        table { border-collapse: collapse; margin-top: 20px; }
+        th, td { border: 1px solid #ccc; padding: 5px 10px; }
+        th { background-color: #f0f0f0; }
+        textarea { width: 100%; }
+        .error { color: red; }
+        .pagination { margin-top: 10px; }
+        .pagination a { margin: 0 5px; text-decoration: none; }
+    </style>
+</head>
+<body>
+    <h1>Kibana Lite</h1>
+    <form method="post">
+        <label for="table">Table :</label>
+        <select name="table" id="table">
+            {% for table in tables %}
+                <option value="{{ table }}" {% if selected_table==table %}selected{% endif %}>{{ table }}</option>
+            {% endfor %}
+        </select>
+        <input type="text" name="filter" placeholder="WHERE ..." value="{{ filter_query }}">
+        <input type="submit" value="Exécuter">
+    </form>
+
+    {% if error %}
+        <p class="error">Erreur: {{ error }}</p>
+    {% endif %}
+
+    {% if results %}
+        <h2>Résultats (page {{ page }})</h2>
+        <table>
+            <tr>
+                {% for col in columns %}
+                    <th>{{ col }}</th>
+                {% endfor %}
+            </tr>
+            {% for row in results %}
+                <tr>
+                    {% for col in columns %}
+                        <td>{{ getattr(row, col) }}</td>
+                    {% endfor %}
+                </tr>
+            {% endfor %}
+        </table>
+
+        <div class="pagination">
+            {% if page > 1 %}
+                <a href="?page={{ page-1 }}">« Précédent</a>
+            {% endif %}
+            <a href="?page={{ page+1 }}">Suivant »</a>
+        </div>
+    {% endif %}
+</body>
+</html>

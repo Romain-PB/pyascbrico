@@ -20,6 +20,11 @@ from routes_consommables import *
 from routes_emprunts import *
 from routes_tresorerie import *
 from routes_pannes import *
+from routes_explorer import *
+
+
+
+
 
 if __name__ == '__main__':
     with app.app_context():
