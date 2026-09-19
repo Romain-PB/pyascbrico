@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+{% block title %}Statistiques - ASC BRICOLAGE{% endblock %}
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-3"><div><h1 class="h2 mb-0">Statistiques</h1><p class="text-muted mb-0">Construisez un visuel à partir des données de l'association.</p></div><button id="preview-button" class="btn btn-primary">Prévisualiser</button></div>
+<div id="stats-error" class="alert alert-danger d-none"></div>
+<div class="row g-3"><section class="col-lg-4"><div class="card shadow-sm"><div class="card-body"><h2 class="h5">Construire le visuel</h2>
+<label class="form-label">Source</label><select id="source" class="form-select mb-3"></select>
+<label class="form-label">Mesure</label><select id="measure" class="form-select mb-3"></select>
+<label class="form-label">Répartition</label><select id="dimension" class="form-select mb-3"></select>
+<label class="form-label">Présentation</label><select id="chart-type" class="form-select mb-3"><option value="bar">Barres</option><option value="line">Courbe</option><option value="pie">Secteurs</option><option value="table">Tableau</option></select><hr><h3 class="h6">Filtres</h3>
+<div id="date-filters" class="row g-2 mb-2"><div class="col-6"><label class="form-label small">Du</label><input id="date-start" class="form-control" type="date"></div><div class="col-6"><label class="form-label small">Au</label><input id="date-end" class="form-control" type="date"></div></div>
+<div class="mb-2"><label class="form-label small">Catégorie</label><select id="category-filter" class="form-select"><option value="">Toutes</option>{% for value in categories %}<option value="{{ value }}">{{ value }}</option>{% endfor %}</select></div>
+<div id="status-wrap" class="mb-2"><label class="form-label small">Statut</label><select id="status-filter" class="form-select"><option value="">Tous</option>{% for value in statuts %}<option value="{{ value }}">{{ value }}</option>{% endfor %}</select></div>
+<div id="payment-wrap" class="mb-2"><label class="form-label small">Paiement</label><select id="payment-filter" class="form-select"><option value="">Tous</option>{% for value in types_paiement %}<option value="{{ value }}">{{ value }}</option>{% endfor %}</select></div>
+<div id="state-wrap"><label class="form-label small">État</label><select id="state-filter" class="form-select"><option value="">Tous</option>{% for value in etats %}<option value="{{ value }}">{{ value }}</option>{% endfor %}</select></div>
+</div></div></section><section class="col-lg-8"><div class="card shadow-sm"><div class="card-body"><h2 id="preview-title" class="h5">Prévisualisation</h2><div id="chart-box"><canvas id="stats-chart"></canvas></div><div id="table-box" class="d-none table-responsive"></div></div></div></section></div>
+<script>window.statsCatalog={{ catalog|tojson }};</script><script src="{{ url_for('static', filename='js/stats.js') }}"></script>
+{% endblock %}
+

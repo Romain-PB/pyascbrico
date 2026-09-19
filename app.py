@@ -1,10 +1,12 @@
+import os
+
 from flask import Flask
 from models import db
 
 UPLOAD_FOLDER = 'uploads'  # Répertoire où vous souhaitez stocker les fichiers
 
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///site.db'
+app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('ASC_BRICOLAGE_DATABASE_URI', 'sqlite:///site.db')
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.secret_key = 'mysecretkey'
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
@@ -20,8 +22,10 @@ from routes_consommables import *
 from routes_emprunts import *
 from routes_tresorerie import *
 from routes_pannes import *
+from routes_stats import *
 
 if __name__ == '__main__':
     with app.app_context():
         db.create_all()  # Create tables
     app.run(debug=True)
+
